@@ -1,0 +1,6 @@
+2026-01-15T08:00:01Z INFO portal boot environment=training
+2026-01-15T08:05:22Z INFO user=3 viewed invoice=1001
+2026-01-15T08:07:03Z INFO report generated successfully
+2026-01-15T08:08:44Z WARN log-integrity-note=FLAG{A09_TAMPERABLE_LOG_01}
+2026-01-15T08:10:11Z INFO authentication complete
+# Notice how actor, source, outcome, and attempted privilege changes are not reliably recorded.

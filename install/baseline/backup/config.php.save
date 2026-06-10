@@ -1,0 +1,5 @@
+<?php
+// FAKE LAB CONFIGURATION — not a real secret
+$db_user = 'northstar_archive';
+$db_password = 'fake-backup-only';
+$environment = 'training';
