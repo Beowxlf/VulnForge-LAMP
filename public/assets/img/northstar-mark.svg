@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Northstar Outfitters compass mark">
+  <rect width="48" height="48" rx="12" fill="#e8f2f2"/>
+  <path d="M24 5l4.4 14.6L43 24l-14.6 4.4L24 43l-4.4-14.6L5 24l14.6-4.4L24 5z" fill="#16706b"/>
+  <path d="M24 12l2.2 9.8L36 24l-9.8 2.2L24 36l-2.2-9.8L12 24l9.8-2.2L24 12z" fill="#12324a"/>
+  <circle cx="24" cy="24" r="3.2" fill="#f4a261"/>
+</svg>

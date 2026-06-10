@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
-required=(README.md docs/MASTER_DESIGN.md docs/INSTALL_UBUNTU_LAMP.md docs/FLAG_GUIDE_INSTRUCTOR.md docs/PLAYER_GUIDE.md docs/HARDENING_GUIDE.md install/install.sh install/reset_lab.sh install/seed.sql apache/vulnforge.conf app/helpers/bootstrap.php public/index.php logs/app.log uploads/welcome.txt backup/northstar-backup.sql.bak)
+required=(README.md docs/MASTER_DESIGN.md docs/INSTALL_UBUNTU_LAMP.md docs/FLAG_GUIDE_INSTRUCTOR.md docs/PLAYER_GUIDE.md docs/HARDENING_GUIDE.md install/install.sh install/reset_lab.sh install/seed.sql apache/vulnforge.conf app/helpers/bootstrap.php public/index.php public/assets/css/main.css public/assets/js/main.js public/assets/img/northstar-mark.svg logs/app.log uploads/welcome.txt backup/northstar-backup.sql.bak)
 for file in "${required[@]}"; do [[ -f "$file" ]] || { echo "missing: $file"; exit 1; }; done
 warning='This application is intentionally vulnerable. Run only in an isolated lab network. Do not expose to the internet.'
 for file in README.md app/helpers/bootstrap.php install/install.sh; do
@@ -18,6 +18,10 @@ for category in A01 A02 A03 A04 A05 A06 A07 A08 A09 A10; do
 done
 rg -F 'Listen 127.0.0.1:8080' apache/vulnforge.conf >/dev/null
 rg -F 'Require local' apache/vulnforge.conf >/dev/null
+if rg -n 'https?://' public app --glob '*.php' --glob '*.css' --glob '*.js' | rg -v "'base_url'"; then
+  echo 'external HTTP(S) application resource found' >&2
+  exit 1
+fi
 if rg -n '\b(shell_exec|exec|system|passthru|proc_open|popen)\s*\(' --glob '*.php' app public; then
   echo 'unsafe OS command execution API found' >&2
   exit 1
