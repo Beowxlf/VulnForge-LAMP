@@ -46,6 +46,10 @@ chmod 0666 "$TARGET_DIR/logs/app.log"
 chmod 0755 "$TARGET_DIR/public" "$TARGET_DIR/public/assets" "$TARGET_DIR/backup"
 chmod 0644 "$TARGET_DIR/public/index.php" "$TARGET_DIR/public/.htaccess" "$TARGET_DIR/public/assets/style.css" "$TARGET_DIR/backup/"*
 
+# Host telemetry is separate from the deliberately incomplete, web-visible fake audit log.
+install -d -o www-data -g adm -m 0750 /var/log/vulnforge
+install -o www-data -g adm -m 0640 /dev/null /var/log/vulnforge/app_events.jsonl
+
 cp "$ROOT_DIR/apache/vulnforge.conf" /etc/apache2/sites-available/vulnforge.conf
 if [[ "$BIND_IP" != "127.0.0.1" ]]; then
   sed -i "s/127\.0\.0\.1:8080/$BIND_IP:8080/g; s/Require local/Require ip 127.0.0.1 10.0.0.0\/8 172.16.0.0\/12 192.168.0.0\/16/g" /etc/apache2/sites-available/vulnforge.conf

@@ -66,6 +66,7 @@ This restores the schema and seed records, clears submissions, and replaces uplo
 - `backup/`, `uploads/`, `logs/` — deliberately exposed or weakly protected **fake** lab artifacts.
 - `docs/` — architecture, deployment, player hints, instructor solutions, and remediation.
 - `tests/` — static smoke tests for required files and safety controls.
+- `wazuh/` — optional agent collection blocks, manager rules, sample events, filters, and SOC playbooks.
 
 ## Documentation
 
@@ -74,6 +75,7 @@ This restores the schema and seed records, clears submissions, and replaces uplo
 3. [Player guide](docs/PLAYER_GUIDE.md)
 4. [Instructor flag guide](docs/FLAG_GUIDE_INSTRUCTOR.md)
 5. [Hardening guide](docs/HARDENING_GUIDE.md)
+6. [Optional Wazuh integration](docs/WAZUH_INTEGRATION.md)
 
 ## Deliberately unsafe settings
 

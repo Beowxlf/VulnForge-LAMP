@@ -1,0 +1,42 @@
+<!--
+  OPTIONAL LAB CONFIGURATION ONLY.
+  Paste the applicable <localfile> blocks inside <ossec_config> in
+  /var/ossec/etc/ossec.conf on the VulnForge Ubuntu VM. Do not replace the
+  existing ossec.conf. Restart the Wazuh agent after validating the file.
+-->
+
+<localfile>
+  <location>/var/log/apache2/vulnforge_access.log</location>
+  <log_format>apache</log_format>
+</localfile>
+
+<localfile>
+  <location>/var/log/apache2/vulnforge_error.log</location>
+  <log_format>apache</log_format>
+</localfile>
+
+<localfile>
+  <location>/var/log/vulnforge/app_events.jsonl</location>
+  <log_format>json</log_format>
+</localfile>
+
+<localfile>
+  <location>/var/log/auth.log</location>
+  <log_format>syslog</log_format>
+</localfile>
+
+<!-- Ubuntu/MySQL package default. Keep only the path that exists locally. -->
+<localfile>
+  <location>/var/log/mysql/error.log</location>
+  <log_format>syslog</log_format>
+</localfile>
+
+<!--
+  Some MariaDB packages use this path instead. If present, use this block and
+  remove or comment out the /var/log/mysql/error.log block above.
+
+<localfile>
+  <location>/var/log/mysql/mariadb.log</location>
+  <log_format>syslog</log_format>
+</localfile>
+-->

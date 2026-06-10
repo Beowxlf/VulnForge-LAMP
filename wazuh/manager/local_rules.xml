@@ -1,0 +1,101 @@
+<!-- VulnForge / Northstar educational starter rules. Lab use only. -->
+<group name="vulnforge,northstar,lab,">
+  <rule id="100500" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="app">^northstar-vulnforge$</field>
+    <description>Northstar VulnForge application telemetry</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="100501" level="3">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^login_failure$</field>
+    <description>Northstar lab login failure</description>
+    <group>authentication_failed,</group>
+  </rule>
+
+  <rule id="100502" level="8" frequency="5" timeframe="120">
+    <if_matched_sid>100501</if_matched_sid>
+    <same_field>src_ip</same_field>
+    <description>LAB: Multiple Northstar login failures from the same source</description>
+    <group>authentication_failures,brute_force,</group>
+  </rule>
+
+  <rule id="100503" level="7">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^admin_access_denied$</field>
+    <description>LAB: Northstar administrative access denied</description>
+    <group>access_denied,authorization,</group>
+  </rule>
+
+  <rule id="100504" level="8">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^invoice_idor_suspected$</field>
+    <description>LAB: Northstar invoice owner mismatch / possible IDOR</description>
+    <group>idor,authorization,</group>
+  </rule>
+
+  <rule id="100505" level="5">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^diagnostics_view$</field>
+    <description>LAB: Northstar diagnostics page viewed</description>
+    <group>diagnostics,information_disclosure,</group>
+  </rule>
+
+  <rule id="100506" level="7">
+    <decoded_as>apache</decoded_as>
+    <url type="pcre2">^/backup(?:/|$)</url>
+    <description>LAB: Northstar exposed backup directory accessed</description>
+    <group>web,backup_access,</group>
+  </rule>
+
+  <rule id="100507" level="5">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^file_upload$</field>
+    <description>LAB: Northstar file upload event</description>
+    <group>upload,</group>
+  </rule>
+
+  <rule id="100508" level="6">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^profile_import$</field>
+    <description>LAB: Northstar profile import event</description>
+    <group>profile_import,software_integrity,</group>
+  </rule>
+
+  <rule id="100509" level="4">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^flag_submission_success$</field>
+    <description>LAB: Northstar training flag submission accepted</description>
+    <group>training_flag,</group>
+  </rule>
+
+  <rule id="100510" level="3">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^flag_submission_failure$</field>
+    <description>Northstar lab flag submission failure</description>
+    <group>training_flag,</group>
+  </rule>
+
+  <rule id="100511" level="7" frequency="6" timeframe="120">
+    <if_matched_sid>100510</if_matched_sid>
+    <same_field>src_ip</same_field>
+    <description>LAB: Burst of failed Northstar flag submissions</description>
+    <group>training_flag,anomaly,</group>
+  </rule>
+
+  <rule id="100512" level="8">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^application_exception$</field>
+    <description>LAB: Northstar application exception</description>
+    <group>application_error,</group>
+  </rule>
+
+  <rule id="100513" level="7">
+    <if_sid>100500</if_sid>
+    <field name="event_type">^suspicious_parameter_pattern$</field>
+    <field name="message" type="pcre2">pattern=sql_metacharacter_sequence</field>
+    <description>LAB: Possible SQLi-looking Northstar search metadata</description>
+    <group>web_attack,sqli_pattern,</group>
+  </rule>
+</group>
