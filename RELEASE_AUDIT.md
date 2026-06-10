@@ -28,6 +28,12 @@ Audit date: 2026-06-10
 - Make all supplied Wazuh files standalone parseable XML while retaining merge-not-overwrite instructions and built-in JSON decoding behavior.
 - Correct the instructor location text and expand smoke coverage for XML parsing and broken route references.
 
+## Prerequisite reliability fix
+
+- Fresh Ubuntu VMs may not include ripgrep, which provides the `rg` command required by the smoke tests.
+- `tests/smoke.sh` now checks its command dependencies before use and prints the exact Ubuntu ripgrep installation commands when `rg` is missing.
+- `install/preflight.sh` validates required local tools, reports optional Apache, MariaDB, ShellCheck, and Wazuh status, and performs no installation unless `--install-missing` is explicitly requested.
+
 ## Known limitations
 
 - The audit environment is not an Ubuntu systemd VM and has no MariaDB client/server, Apache service, or Wazuh installation. Package installation, live `seed.sql` import, `apache2ctl configtest`, HTTP workflows, and Wazuh service validation remain manual VM release checks.

@@ -9,6 +9,21 @@
 3. Take a clean checkpoint.
 4. Copy this repository into the VM without adding real secrets.
 
+## Prerequisites and Preflight
+
+Install the repository and local validation tools on a fresh Ubuntu VM, then check the environment before installation or testing:
+
+```bash
+sudo apt update
+sudo apt install -y git ripgrep php-cli curl
+./install/preflight.sh
+./tests/smoke.sh
+```
+
+Ripgrep provides the `rg` command used by `tests/smoke.sh`. The `php-cli` package is required for the smoke test's PHP syntax checks. Apache, MariaDB, and the PHP web packages are installed by `install/install.sh`; a pre-install preflight may therefore warn that their commands are not present. Wazuh is optional and must be installed separately.
+
+The preflight reports missing dependencies but does not install anything by default. If explicitly invoked as `./install/preflight.sh --install-missing`, it installs only supported Ubuntu workflow packages and never installs Apache, MariaDB, PHP web packages, or Wazuh. It does not modify `/var/ossec/etc/ossec.conf`.
+
 ## Automated install
 
 ```bash

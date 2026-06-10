@@ -80,6 +80,12 @@ Passed checks:
 
 `ShellCheck` was not installed in the audit container and is recorded as an environment limitation, not a passing check.
 
+## Prerequisite reliability fix
+
+- Fresh Ubuntu VMs may not include ripgrep, which provides the `rg` command required by the smoke tests.
+- `tests/smoke.sh` now checks its command dependencies before use and prints the exact Ubuntu ripgrep installation commands when `rg` is missing.
+- `install/preflight.sh` validates required local tools, reports optional Apache, MariaDB, ShellCheck, and Wazuh status, and performs no installation unless `--install-missing` is explicitly requested.
+
 ## 11. Known limitations
 
 - The audit container is not the target Ubuntu systemd VM and does not provide live Apache, MariaDB, or Wazuh services.

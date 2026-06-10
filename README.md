@@ -39,6 +39,21 @@ sudo VULNFORGE_BIND_IP=192.168.56.20 ./install/install.sh
 
 The installer rejects public bind addresses. Review the generated Apache policy before using any non-loopback address.
 
+## Prerequisites and Preflight
+
+On a fresh Ubuntu VM, install the repository and validation tools, then run the preflight and smoke tests:
+
+```bash
+sudo apt update
+sudo apt install -y git ripgrep php-cli curl
+./install/preflight.sh
+./tests/smoke.sh
+```
+
+Ripgrep provides the `rg` command used by the smoke tests, and `php-cli` provides PHP syntax validation. The main `install/install.sh` installer installs Apache, MariaDB, and the PHP web packages required by the application. Wazuh is optional, is installed separately, and is never installed or configured automatically by the project.
+
+`./install/preflight.sh` reports required and optional dependencies without changing the VM. Use `./install/preflight.sh --install-missing` only when you explicitly want it to install supported Ubuntu workflow packages; it does not install Apache, MariaDB, PHP web packages, or Wazuh.
+
 ## Reset in one command
 
 ```bash

@@ -37,7 +37,7 @@ is_private_bind_ip "$BIND_IP" || { echo "Refusing invalid, non-loopback, or non-
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y apache2 mariadb-server php libapache2-mod-php php-mysql php-json curl
+apt-get install -y apache2 mariadb-server php php-cli libapache2-mod-php php-mysql php-json curl ripgrep
 systemctl enable --now mariadb apache2
 
 DB_PASS_SQL=${DB_PASS//\\/\\\\}
@@ -101,4 +101,8 @@ chmod 0600 /etc/vulnforge-lab.conf
 echo
 printf 'Lab URL: http://%s:8080\n' "$BIND_IP"
 echo 'Reset command: sudo /var/www/vulnforge/install/reset_lab.sh'
+echo
+echo 'To run local validation:'
+echo '  ./install/preflight.sh'
+echo '  ./tests/smoke.sh'
 printf '\n*** %s ***\n' "$WARNING"

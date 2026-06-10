@@ -1,8 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
+missing_commands=()
+for command_name in rg sort wc grep bash find python3 php; do
+  command -v "$command_name" >/dev/null 2>&1 || missing_commands+=("$command_name")
+done
+if (( ${#missing_commands[@]} > 0 )); then
+  for command_name in "${missing_commands[@]}"; do
+    if [[ $command_name == rg ]]; then
+      cat >&2 <<'MESSAGE'
+Missing required command: rg
+Install on Ubuntu with:
+  sudo apt update
+  sudo apt install -y ripgrep
+MESSAGE
+    else
+      printf 'Missing required command: %s\n' "$command_name" >&2
+    fi
+  done
+  exit 1
+fi
+
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
-required=(README.md RELEASE_AUDIT.md docs/MASTER_DESIGN.md docs/INSTALL_UBUNTU_LAMP.md docs/FLAG_GUIDE_INSTRUCTOR.md docs/PLAYER_GUIDE.md docs/HARDENING_GUIDE.md docs/WAZUH_INTEGRATION.md wazuh/README.md wazuh/agent/ossec-localfile-vulnforge.xml wazuh/manager/local_rules.xml wazuh/manager/local_decoder.xml wazuh/manager/logtest_samples.txt wazuh/queries/wazuh_dashboard_filters.md wazuh/queries/investigation_playbooks.md install/install.sh install/reset_lab.sh install/seed.sql apache/vulnforge.conf app/helpers/bootstrap.php public/index.php public/assets/css/main.css public/assets/js/main.js public/assets/img/northstar-mark.svg logs/app.log uploads/welcome.txt backup/northstar-backup.sql.bak)
+required=(README.md RELEASE_AUDIT.md docs/MASTER_DESIGN.md docs/INSTALL_UBUNTU_LAMP.md docs/FLAG_GUIDE_INSTRUCTOR.md docs/PLAYER_GUIDE.md docs/HARDENING_GUIDE.md docs/WAZUH_INTEGRATION.md wazuh/README.md wazuh/agent/ossec-localfile-vulnforge.xml wazuh/manager/local_rules.xml wazuh/manager/local_decoder.xml wazuh/manager/logtest_samples.txt wazuh/queries/wazuh_dashboard_filters.md wazuh/queries/investigation_playbooks.md install/install.sh install/reset_lab.sh install/preflight.sh install/seed.sql apache/vulnforge.conf app/helpers/bootstrap.php public/index.php public/assets/css/main.css public/assets/js/main.js public/assets/img/northstar-mark.svg logs/app.log uploads/welcome.txt backup/northstar-backup.sql.bak)
 for file in "${required[@]}"; do [[ -f "$file" ]] || { echo "missing: $file"; exit 1; }; done
 warning='This application is intentionally vulnerable. Run only in an isolated lab network. Do not expose to the internet.'
 for file in README.md app/helpers/bootstrap.php install/install.sh; do
@@ -22,6 +42,11 @@ rg -F '/var/log/vulnforge/app_events.jsonl' app/helpers/bootstrap.php install/in
 rg -F 'vulnforge_access.log' apache/vulnforge.conf wazuh/agent/ossec-localfile-vulnforge.xml >/dev/null
 rg -F 'vulnforge_error.log' apache/vulnforge.conf wazuh/agent/ossec-localfile-vulnforge.xml >/dev/null
 rg -F 'Do not overwrite' wazuh/agent/ossec-localfile-vulnforge.xml >/dev/null
+[[ -x install/preflight.sh ]] || { echo 'install/preflight.sh must be executable' >&2; exit 1; }
+rg -F 'check_required rg rg ripgrep' install/preflight.sh >/dev/null
+rg -F 'ripgrep' install/preflight.sh >/dev/null
+rg -F 'ripgrep' README.md >/dev/null
+rg -F 'install/preflight.sh' docs/INSTALL_UBUNTU_LAMP.md >/dev/null
 if rg -n 'https?://' public app --glob '*.php' --glob '*.css' --glob '*.js' | rg -v "'base_url'"; then
   echo 'external HTTP(S) application resource found' >&2
   exit 1
@@ -52,5 +77,5 @@ if missing:
 PY
 php_files=$(find app public -type f -name '*.php' -print)
 while IFS= read -r file; do php -l "$file" >/dev/null; done <<< "$php_files"
-bash -n install/install.sh install/reset_lab.sh tests/smoke.sh
+bash -n install/install.sh install/reset_lab.sh install/preflight.sh tests/smoke.sh
 echo 'VulnForge static smoke tests passed.'
