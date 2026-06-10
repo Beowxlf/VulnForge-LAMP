@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
-required=(README.md docs/MASTER_DESIGN.md docs/INSTALL_UBUNTU_LAMP.md docs/FLAG_GUIDE_INSTRUCTOR.md docs/PLAYER_GUIDE.md docs/HARDENING_GUIDE.md docs/WAZUH_INTEGRATION.md wazuh/README.md wazuh/agent/ossec-localfile-vulnforge.xml wazuh/manager/local_rules.xml wazuh/manager/local_decoder.xml wazuh/manager/logtest_samples.txt wazuh/queries/wazuh_dashboard_filters.md wazuh/queries/investigation_playbooks.md install/install.sh install/reset_lab.sh install/seed.sql apache/vulnforge.conf app/helpers/bootstrap.php public/index.php public/assets/css/main.css public/assets/js/main.js public/assets/img/northstar-mark.svg logs/app.log uploads/welcome.txt backup/northstar-backup.sql.bak)
+required=(README.md RELEASE_AUDIT.md docs/MASTER_DESIGN.md docs/INSTALL_UBUNTU_LAMP.md docs/FLAG_GUIDE_INSTRUCTOR.md docs/PLAYER_GUIDE.md docs/HARDENING_GUIDE.md docs/WAZUH_INTEGRATION.md wazuh/README.md wazuh/agent/ossec-localfile-vulnforge.xml wazuh/manager/local_rules.xml wazuh/manager/local_decoder.xml wazuh/manager/logtest_samples.txt wazuh/queries/wazuh_dashboard_filters.md wazuh/queries/investigation_playbooks.md install/install.sh install/reset_lab.sh install/seed.sql apache/vulnforge.conf app/helpers/bootstrap.php public/index.php public/assets/css/main.css public/assets/js/main.js public/assets/img/northstar-mark.svg logs/app.log uploads/welcome.txt backup/northstar-backup.sql.bak)
 for file in "${required[@]}"; do [[ -f "$file" ]] || { echo "missing: $file"; exit 1; }; done
 warning='This application is intentionally vulnerable. Run only in an isolated lab network. Do not expose to the internet.'
 for file in README.md app/helpers/bootstrap.php install/install.sh; do
@@ -30,6 +30,26 @@ if rg -n '\b(shell_exec|exec|system|passthru|proc_open|popen)\s*\(' --glob '*.ph
   echo 'unsafe OS command execution API found' >&2
   exit 1
 fi
+python3 - <<'PY'
+import re
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+for path in [
+    'wazuh/manager/local_rules.xml',
+    'wazuh/manager/local_decoder.xml',
+    'wazuh/agent/ossec-localfile-vulnforge.xml',
+]:
+    ET.parse(path)
+
+index = Path('public/index.php').read_text()
+bootstrap = Path('app/helpers/bootstrap.php').read_text()
+routes = set(re.findall(r"case '([a-z0-9-]+)'", index)) | {'logout', 'api-invoice'}
+references = set(re.findall(r'route=([a-z0-9-]+)', index + bootstrap))
+missing = references - routes
+if missing:
+    raise SystemExit(f'route references without handlers: {sorted(missing)}')
+PY
 php_files=$(find app public -type f -name '*.php' -print)
 while IFS= read -r file; do php -l "$file" >/dev/null; done <<< "$php_files"
 bash -n install/install.sh install/reset_lab.sh tests/smoke.sh
