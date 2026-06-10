@@ -1,2 +1,70 @@
 # VulnForge-LAMP
-**VulnForge-LAMP** is an intentionally vulnerable LAMP-stack web application designed for local cybersecurity training. The goal is to help a learner move from basic web vulnerability theory into hands-on website boxes similar to CTF, TryHackMe, Hack The Box, PortSwigger-style labs, and internal purple-team web exercises.
+
+> **This application is intentionally vulnerable. Run only in an isolated lab network. Do not expose to the internet.**
+
+VulnForge-LAMP is a local-only OWASP training application themed as the fictional **Northstar Outfitters Internal Portal**. It provides 20 beginner-friendly CTF challenges—two for each OWASP Top 10:2025 category—using fake users, products, invoices, secrets, payments, logs, and services.
+
+## Safety boundary
+
+- Deploy only to an Ubuntu Server VM attached to a Hyper-V **Private** or carefully controlled **Internal** virtual switch.
+- The supplied Apache site binds to `127.0.0.1:8080` by default. The installer accepts only loopback or RFC1918 addresses through `VULNFORGE_BIND_IP`.
+- Never port-forward, publish, reverse-proxy, or expose this application to the internet.
+- Do not reuse any lab credential. No third-party services are contacted.
+- Upload execution is disabled. The command-injection lesson is a simulated interpreter over fixed fake values and never invokes an OS shell.
+- Take a VM checkpoint before installation and reset after exercises.
+
+## Quick start
+
+```bash
+git clone <your-private-repository> VulnForge-LAMP
+cd VulnForge-LAMP
+sudo ./install/install.sh
+```
+
+The default URL is `http://127.0.0.1:8080`. To permit access from another VM on an isolated RFC1918 lab network:
+
+```bash
+sudo VULNFORGE_BIND_IP=192.168.56.20 ./install/install.sh
+```
+
+The installer rejects public bind addresses. Review the generated Apache policy before using any non-loopback address.
+
+## Reset in one command
+
+```bash
+sudo /var/www/vulnforge/install/reset_lab.sh
+```
+
+This restores the schema and seed records, clears submissions, and replaces uploads, exposed backups, and application logs with clean baseline copies.
+
+## Fake player accounts
+
+| Email | Password | Role |
+|---|---|---|
+| `admin@northstar.local` | `admin123` | admin |
+| `analyst@northstar.local` | `analyst123` | analyst |
+| `j.smith@northstar.local` | `smith123` | employee |
+| `m.chen@northstar.local` | `chen123` | employee |
+| `guest@northstar.local` | `guest` | guest |
+
+## Repository map
+
+- `public/` — Apache document root and front controller.
+- `app/` — configuration, helpers, and fictional vulnerable dependency.
+- `install/` — Ubuntu installer, reset command, SQL seed, and reset baselines.
+- `apache/` — localhost-first virtual host.
+- `backup/`, `uploads/`, `logs/` — deliberately exposed or weakly protected **fake** lab artifacts.
+- `docs/` — architecture, deployment, player hints, instructor solutions, and remediation.
+- `tests/` — static smoke tests for required files and safety controls.
+
+## Documentation
+
+1. [Master design](docs/MASTER_DESIGN.md)
+2. [Ubuntu LAMP installation](docs/INSTALL_UBUNTU_LAMP.md)
+3. [Player guide](docs/PLAYER_GUIDE.md)
+4. [Instructor flag guide](docs/FLAG_GUIDE_INSTRUCTOR.md)
+5. [Hardening guide](docs/HARDENING_GUIDE.md)
+
+## Deliberately unsafe settings
+
+The project intentionally contains raw SQL construction, object-level authorization failures, weak MD5 password hashes, reversible Base64 data, unsigned client imports, predictable local tokens, verbose errors, indexed fake artifacts, incomplete audit events, and weak permissions on resettable fake logs/uploads. These are teaching defects—not deployment patterns. See the hardening guide before adapting any code.

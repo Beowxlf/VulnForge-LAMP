@@ -1,0 +1,4 @@
+-- Northstar Outfitters fictional nightly export
+-- TODO: move backups outside the web root
+INSERT INTO legacy_notes VALUES ('migration marker','FLAG{A02_EXPOSED_BACKUP_01}');
+-- fake credential only: archive_user / archive123

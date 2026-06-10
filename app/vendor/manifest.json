@@ -1,0 +1,5 @@
+{
+  "packages": [
+    {"name": "fake-vendor/unsafe-helper", "version": "0.8.1", "status": "outdated", "advisory": "VFSA-0001: caller input is rendered without output encoding"}
+  ]
+}
