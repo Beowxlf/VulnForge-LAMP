@@ -22,5 +22,7 @@ chmod 0777 "$ROOT/uploads" "$ROOT/logs"
 chmod 0666 "$ROOT/logs/app.log"
 chmod 0755 "$ROOT/backup"
 chmod 0644 "$ROOT/backup/"*
+install -d -o www-data -g adm -m 0750 /var/log/vulnforge
+install -o www-data -g adm -m 0640 /dev/null /var/log/vulnforge/app_events.jsonl
 echo "Reset complete: database, submissions, flags, uploads, backups, and sample logs restored."
 echo "This application is intentionally vulnerable. Run only in an isolated lab network. Do not expose to the internet."
