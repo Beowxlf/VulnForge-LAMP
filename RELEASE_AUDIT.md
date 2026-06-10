@@ -44,3 +44,44 @@ Audit date: 2026-06-10
 - [ ] Confirm `/backup/`, `/uploads/`, and `/logs/` indexing matches the challenge guide, while uploaded `.php` files are served without execution.
 - [ ] Run reset after creating submissions and changing uploads/backups/logs; confirm seed data, flags, submissions, baseline artifacts, and `/var/log/vulnforge/app_events.jsonl` return to baseline.
 - [ ] Validate generated JSON Lines and permissions, merge Wazuh `<localfile>` blocks into the existing `ossec.conf`, run `wazuh-logtest`, and confirm no installer step installs Wazuh or overwrites manager/agent configuration.
+
+## Final synchronization after instructor documentation merge
+
+The final synchronization audit on 2026-06-10 confirmed that the release-audit and instructor/SOC workstreams are present together with no unresolved conflict markers. All 20 seeded flags match the full instructor walkthroughs, each A01–A10 category retains exactly two flags, documented routes resolve to the front controller, compatibility endpoint, or intentional Apache alias, and the required application, Apache, and Wazuh paths are consistent.
+
+The synchronization review corrected only documentation merge drift: the Wazuh per-flag matrix now has 20 machine-countable flag rows, and the API walkthrough now identifies `/api/invoice.php` accurately as a compatibility endpoint for the `api-invoice` route. No challenge mechanics, flags, route behavior, A09 logging gaps, or telemetry sensitivity boundaries changed.
+
+Static smoke, PHP syntax, Bash syntax, XML parsing, Markdown relative-link, remote-asset, PHP OS-command API, and whitespace checks must pass before release. `shellcheck` may be unavailable when it is not installed. Live Apache, MariaDB, and optional Wazuh service testing cannot be completed in this audit container and must occur on the Ubuntu VM.
+
+### Final Ubuntu VM command checklist
+
+After cloning on the Ubuntu VM:
+
+```bash
+sudo ./install/install.sh
+sudo apachectl configtest
+sudo systemctl status apache2 --no-pager
+sudo systemctl status mariadb --no-pager
+curl -i http://127.0.0.1:8080/
+sudo tail -n 20 /var/log/apache2/vulnforge_access.log
+sudo tail -n 20 /var/log/apache2/vulnforge_error.log
+sudo tail -n 20 /var/log/vulnforge/app_events.jsonl
+sudo ./install/reset_lab.sh
+./tests/smoke.sh
+```
+
+If Wazuh is installed later:
+
+```bash
+sudo systemctl status wazuh-agent --no-pager
+sudo tail -n 50 /var/ossec/logs/ossec.log
+sudo /var/ossec/bin/agent_control -l
+```
+
+Manager-side:
+
+```bash
+sudo /var/ossec/bin/wazuh-logtest
+sudo systemctl restart wazuh-manager
+sudo systemctl status wazuh-manager --no-pager
+```

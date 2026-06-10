@@ -1539,7 +1539,7 @@ Client bugs, health checks, and manual exploration can omit required parameters.
 
 ## 8. Common Mistakes
 
-Using the stale `/api/invoice.php` path from older documentation, claiming invoice access occurred, or reporting only the 500 without the leaked error contract.
+Treating the compatibility path `/api/invoice.php` as a different challenge, claiming invoice access occurred, or reporting only the 500 without the leaked error contract. The compatibility endpoint delegates to the same `api-invoice` route.
 
 ## 9. Remediation
 
