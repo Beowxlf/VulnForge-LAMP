@@ -76,6 +76,9 @@ This restores the schema and seed records, clears submissions, and replaces uplo
 4. [Instructor flag guide](docs/FLAG_GUIDE_INSTRUCTOR.md)
 5. [Hardening guide](docs/HARDENING_GUIDE.md)
 6. [Optional Wazuh integration](docs/WAZUH_INTEGRATION.md)
+7. [Instructor-only walkthroughs and SOC analysis](docs/instructor/README.md) — **complete spoilers for all 20 flags**
+
+> **Public-repository warning:** `docs/instructor/` reveals every solution. Keep the repository private, keep that directory on a private instructor branch, or remove it before publishing a player version.
 
 ## Deliberately unsafe settings
 

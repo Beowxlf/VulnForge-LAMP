@@ -6,6 +6,8 @@ This is an authorized, local-only exercise containing only fictional data. Never
 
 > **This application is intentionally vulnerable. Run only in an isolated lab network. Do not expose to the internet.**
 
+> **Blind-run spoiler warning:** `docs/instructor/` contains every exact flag and full solution. Do not open it during a blind run. If distributing a public/player copy, keep the repository private, keep instructor docs on a private branch, or remove `docs/instructor/` before publication.
+
 Find all 20 flags and submit them on the authenticated **Scoreboard** page. Flags look like `FLAG{CATEGORY_DESCRIPTION_01}`. Use browser developer tools, HTTP inspection, careful parameter changes, and local decoding/query reasoning. Do not modify the host OS or use destructive commands.
 
 ## Accounts
