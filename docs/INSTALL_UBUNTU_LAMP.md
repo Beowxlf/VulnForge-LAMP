@@ -16,7 +16,7 @@ cd VulnForge-LAMP
 sudo ./install/install.sh
 ```
 
-The script verifies Ubuntu, installs Apache/PHP/MariaDB, creates the local database and lab user, imports `install/seed.sql`, copies the project to `/var/www/vulnforge`, enables the vhost, applies intentionally weak permissions only to resettable fake logs/uploads, runs `apache2ctl configtest`, and prints the warning and URL.
+The script verifies Ubuntu, installs Apache/PHP/MariaDB, creates the local database and lab user, imports `install/seed.sql`, stages the application before replacing `/var/www/vulnforge`, writes the installed PHP database runtime configuration, enables the vhost, applies intentionally weak permissions only to resettable fake logs/uploads, runs `apache2ctl configtest`, and prints the warning and URL.
 
 ### Access from a separate training VM
 
@@ -44,7 +44,7 @@ For a private-IP install, substitute that IP in the curl command. Confirm all te
 sudo /var/www/vulnforge/install/reset_lab.sh
 ```
 
-The reset drops and recreates all seeded tables, so submissions and runtime profile changes disappear. It then recreates uploads, backups, and logs from `install/baseline/`.
+The reset drops and recreates all seeded tables, so submissions and runtime profile changes disappear. It then recreates uploads, backups, and fake logs from `install/baseline/` and truncates `/var/log/vulnforge/app_events.jsonl`.
 
 ## Uninstall
 
@@ -53,6 +53,6 @@ From a VM checkpoint is preferred. Otherwise disable the site, remove `/var/www/
 ## Troubleshooting
 
 - **403 from another VM:** the default site is loopback-only. Reinstall with an RFC1918 `VULNFORGE_BIND_IP` on a Private/Internal switch.
-- **Database connection error:** verify MariaDB is running and `/etc/vulnforge-lab.conf` matches the seeded defaults.
+- **Database connection error:** verify MariaDB is running and that `/etc/vulnforge-lab.conf` and `/var/www/vulnforge/app/config/runtime.php` contain the same installed database settings.
 - **No routes:** verify `a2enmod rewrite`, `AllowOverride All`, and the vhost configuration.
 - **Reset denied:** run it with `sudo`; reset requires local MariaDB administration and filesystem ownership changes.
