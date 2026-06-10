@@ -1,7 +1,7 @@
 <!--
   OPTIONAL LAB CONFIGURATION ONLY.
   Paste the applicable <localfile> blocks inside <ossec_config> in
-  /var/ossec/etc/ossec.conf on the VulnForge Ubuntu VM. Do not replace the
+  /var/ossec/etc/ossec.conf on the VulnForge Ubuntu VM. Do not overwrite the
   existing ossec.conf. Restart the Wazuh agent after validating the file.
 -->
 
