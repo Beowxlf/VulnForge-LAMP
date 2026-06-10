@@ -2,7 +2,10 @@
   VulnForge app_events.jsonl uses the Wazuh agent's json log_format and the
   built-in JSON decoder. No custom decoder is required for this starter pack.
 
-  Keep this file as documentation, or merge future lab-only decoders here.
+  This inert decoder keeps the documentation file standalone, parseable XML.
   Do not add a decoder that captures passwords, cookies, authorization headers,
   reset tokens, raw flag submissions, or uploaded file contents.
 -->
+<decoder name="vulnforge-documentation-only">
+  <prematch>^VULNFORGE_DECODER_NOT_USED$</prematch>
+</decoder>
