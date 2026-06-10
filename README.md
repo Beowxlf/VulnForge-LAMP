@@ -4,6 +4,16 @@
 
 VulnForge-LAMP is a local-only OWASP training application themed as the fictional **Northstar Outfitters Internal Portal**. It provides 20 beginner-friendly CTF challenges—two for each OWASP Top 10:2025 category—using fake users, products, invoices, secrets, payments, logs, and services.
 
+The release-candidate interface presents the lab as a polished corporate intranet for a fictional outdoor equipment, logistics, and retail-support organization. It includes consistent authenticated navigation, employee dashboards, finance records, a helpdesk-style support queue, profile portability, a local document exchange, IT diagnostics, an operations console, audit review, and a professional training-progress register. All branding and business records are fictional, all visual assets are bundled locally, and the presentation layer preserves the intentionally vulnerable challenge behavior.
+
+## Portal experience
+
+- **Employee workspace:** role-aware portal chrome, dashboard summaries, profile tools, and consistent navigation across authenticated routes.
+- **Business operations:** realistic fictional product, invoice, support, refund, and file-exchange workflows for Northstar departments.
+- **IT and administration:** internal status cards, bounded diagnostics, administrative widgets, audit events, and release notes.
+- **Security readiness:** an integrated scoreboard frames challenge progress as authorized internal training rather than a raw flag database.
+- **Local assets only:** the interface uses repository-hosted CSS, JavaScript, and an SVG compass mark; it adds no CDN, analytics, tracking, font, or third-party service dependency.
+
 ## Safety boundary
 
 - Deploy only to an Ubuntu Server VM attached to a Hyper-V **Private** or carefully controlled **Internal** virtual switch.

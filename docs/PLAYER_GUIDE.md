@@ -20,6 +20,19 @@ Find all 20 flags and submit them on the authenticated **Scoreboard** page. Flag
 
 These credentials are intentionally obvious, fake, and valid nowhere else.
 
+## How to approach the portal
+
+Treat Northstar Outfitters like a small internal business system rather than a collection of isolated puzzles. Sign in, establish what an ordinary employee can see, and then move through the portal as a staff member would:
+
+1. Start on the **Dashboard** and note the available Finance, Support, Profile, and File Exchange workflows.
+2. Build a mental map of public tools such as the **Catalog**, **Portal Search**, **System Status**, and **Release Notes**, then compare them with authenticated areas.
+3. Read business records carefully. Invoice references, support status, profile exports, product notes, and operational messages can all reveal how the fictional application trusts data.
+4. Use normal browser tools first: inspect links, parameters, forms, cookies, responses, comments, local files, and API output. Make one controlled change at a time.
+5. Follow clues between departments. A release note may point to an IT pilot, an account setting may affect an admin view, and a directory listing may complement a portal workflow.
+6. Submit discoveries in the **Security Readiness Scoreboard**. It always contains exactly 20 objectives, with two for each OWASP Top 10:2025 category.
+
+The corporate styling is part of the scenario, not a claim that the code is secure. Every exercise remains intentionally vulnerable and confined to fake, resettable data.
+
 ## Rules of engagement
 
 - Stay on the VulnForge VM and its private lab network.
