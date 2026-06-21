@@ -87,11 +87,12 @@ This restores the schema and seed records, clears submissions, and replaces uplo
 
 1. [Master design](docs/MASTER_DESIGN.md)
 2. [Ubuntu LAMP installation](docs/INSTALL_UBUNTU_LAMP.md)
-3. [Player guide](docs/PLAYER_GUIDE.md)
-4. [Instructor flag guide](docs/FLAG_GUIDE_INSTRUCTOR.md)
-5. [Hardening guide](docs/HARDENING_GUIDE.md)
-6. [Optional Wazuh integration](docs/WAZUH_INTEGRATION.md)
-7. [Instructor-only walkthroughs and SOC analysis](docs/instructor/README.md) — **complete spoilers for all 20 flags**
+3. [Threat model and data flow diagram](docs/THREAT_MODEL.md)
+4. [Player guide](docs/PLAYER_GUIDE.md)
+5. [Instructor flag guide](docs/FLAG_GUIDE_INSTRUCTOR.md)
+6. [Hardening guide](docs/HARDENING_GUIDE.md)
+7. [Optional Wazuh integration](docs/WAZUH_INTEGRATION.md)
+8. [Instructor-only walkthroughs and SOC analysis](docs/instructor/README.md) — **complete spoilers for all 20 flags**
 
 > **Public-repository warning:** `docs/instructor/` reveals every solution. Keep the repository private, keep that directory on a private instructor branch, or remove it before publishing a player version.
 
